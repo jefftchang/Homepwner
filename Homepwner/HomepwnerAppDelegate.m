@@ -8,6 +8,8 @@
 
 #import "HomepwnerAppDelegate.h"
 
+#import "ItemsViewController.h"
+
 @implementation HomepwnerAppDelegate
 
 @synthesize window = _window;
@@ -16,6 +18,11 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+    
+    ItemsViewController *itemsViewController = [[ItemsViewController alloc] init];
+    [[self window] setRootViewController:itemsViewController];
+    
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;

@@ -13,6 +13,8 @@
 		541B01FB163B00C100AFD920 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 541B01F9163B00C100AFD920 /* InfoPlist.strings */; };
 		541B01FD163B00C100AFD920 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 541B01FC163B00C100AFD920 /* main.m */; };
 		541B0201163B00C100AFD920 /* HomepwnerAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 541B0200163B00C100AFD920 /* HomepwnerAppDelegate.m */; };
+		541B0209163B017800AFD920 /* ItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 541B0208163B017800AFD920 /* ItemsViewController.m */; };
+		541B020C163B040800AFD920 /* BNRItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 541B020B163B040800AFD920 /* BNRItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,12 +22,16 @@
 		541B01F0163B00C100AFD920 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		541B01F2163B00C100AFD920 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		541B01F4163B00C100AFD920 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		541B01F8163B00C100AFD920 /* Homepwner-Info.plist */ = {isa = PBXFileReference; path = "Homepwner-Info.plist"; sourceTree = "<group>"; };
+		541B01F8163B00C100AFD920 /* Homepwner-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Homepwner-Info.plist"; sourceTree = "<group>"; };
 		541B01FA163B00C100AFD920 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		541B01FC163B00C100AFD920 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		541B01FE163B00C100AFD920 /* Homepwner-Prefix.pch */ = {isa = PBXFileReference; path = "Homepwner-Prefix.pch"; sourceTree = "<group>"; };
-		541B01FF163B00C100AFD920 /* HomepwnerAppDelegate.h */ = {isa = PBXFileReference; path = HomepwnerAppDelegate.h; sourceTree = "<group>"; };
+		541B01FE163B00C100AFD920 /* Homepwner-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Homepwner-Prefix.pch"; sourceTree = "<group>"; };
+		541B01FF163B00C100AFD920 /* HomepwnerAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomepwnerAppDelegate.h; sourceTree = "<group>"; };
 		541B0200163B00C100AFD920 /* HomepwnerAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomepwnerAppDelegate.m; sourceTree = "<group>"; };
+		541B0207163B017800AFD920 /* ItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ItemsViewController.h; path = ../ItemsViewController.h; sourceTree = "<group>"; };
+		541B0208163B017800AFD920 /* ItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ItemsViewController.m; path = ../ItemsViewController.m; sourceTree = "<group>"; };
+		541B020A163B040800AFD920 /* BNRItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BNRItem.h; sourceTree = "<group>"; };
+		541B020B163B040800AFD920 /* BNRItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BNRItem.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,8 +78,12 @@
 		541B01F6163B00C100AFD920 /* Homepwner */ = {
 			isa = PBXGroup;
 			children = (
+				541B0207163B017800AFD920 /* ItemsViewController.h */,
+				541B0208163B017800AFD920 /* ItemsViewController.m */,
 				541B01FF163B00C100AFD920 /* HomepwnerAppDelegate.h */,
 				541B0200163B00C100AFD920 /* HomepwnerAppDelegate.m */,
+				541B020A163B040800AFD920 /* BNRItem.h */,
+				541B020B163B040800AFD920 /* BNRItem.m */,
 				541B01F7163B00C100AFD920 /* Supporting Files */,
 			);
 			path = Homepwner;
@@ -155,6 +165,8 @@
 			files = (
 				541B01FD163B00C100AFD920 /* main.m in Sources */,
 				541B0201163B00C100AFD920 /* HomepwnerAppDelegate.m in Sources */,
+				541B0209163B017800AFD920 /* ItemsViewController.m in Sources */,
+				541B020C163B040800AFD920 /* BNRItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
