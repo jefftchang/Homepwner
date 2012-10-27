@@ -46,4 +46,31 @@
     return p;
 }
 
+- (void)removeItem: (BNRItem *)p
+{
+    [allItems removeObjectIdenticalTo:p];
+}
+
+- (void)tableView: (UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        BNRItemStore *ps = [BNRItemStore sharedStore];
+        NSArray *items = [ps allItems];
+        BNRItem *p = [items objectAtIndex:[indexPath row]];
+        [ps removeItem:p];
+        
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (void)moveItemAtIndex:(int)from toIndex:(int)to
+{
+    if (from == to) {
+        return;
+    }
+    BNRItem *p = [allItems objectAtIndex:from];
+    [allItems removeObjectAtIndex:from];
+    [allItems insertObject:p atIndex:to];
+    
+}
 @end
