@@ -19,6 +19,7 @@
 		541B0211163B346500AFD920 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 541B0210163B346500AFD920 /* HeaderView.xib */; };
 		541B0215163E279900AFD920 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 541B0213163E279900AFD920 /* DetailViewController.m */; };
 		541B0216163E279900AFD920 /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 541B0214163E279900AFD920 /* DetailViewController.xib */; };
+		541B0219163EF40900AFD920 /* BNRImageStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 541B0218163EF40900AFD920 /* BNRImageStore.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,8 @@
 		541B0212163E279900AFD920 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DetailViewController.h; path = ../DetailViewController.h; sourceTree = "<group>"; };
 		541B0213163E279900AFD920 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DetailViewController.m; path = ../DetailViewController.m; sourceTree = "<group>"; };
 		541B0214163E279900AFD920 /* DetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = DetailViewController.xib; path = ../DetailViewController.xib; sourceTree = "<group>"; };
+		541B0217163EF40900AFD920 /* BNRImageStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BNRImageStore.h; path = ../BNRImageStore.h; sourceTree = "<group>"; };
+		541B0218163EF40900AFD920 /* BNRImageStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BNRImageStore.m; path = ../BNRImageStore.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +91,8 @@
 		541B01F6163B00C100AFD920 /* Homepwner */ = {
 			isa = PBXGroup;
 			children = (
+				541B0217163EF40900AFD920 /* BNRImageStore.h */,
+				541B0218163EF40900AFD920 /* BNRImageStore.m */,
 				541B0212163E279900AFD920 /* DetailViewController.h */,
 				541B0213163E279900AFD920 /* DetailViewController.m */,
 				541B0214163E279900AFD920 /* DetailViewController.xib */,
@@ -187,6 +192,7 @@
 				541B020C163B040800AFD920 /* BNRItem.m in Sources */,
 				541B020F163B091200AFD920 /* BNRItemStore.m in Sources */,
 				541B0215163E279900AFD920 /* DetailViewController.m in Sources */,
+				541B0219163EF40900AFD920 /* BNRImageStore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
