@@ -9,15 +9,18 @@
 #import <UIKit/UIKit.h>
 
 @class BNRItem;
-@interface DetailViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate>
+@interface DetailViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextFieldDelegate, UIPopoverControllerDelegate>
 {
     __weak IBOutlet UIImageView *imageView;
     __weak IBOutlet UITextField *nameField;
     __weak IBOutlet UITextField *serialNumberField;
     __weak IBOutlet UITextField *valueField;
     __weak IBOutlet UILabel *dateLabel;
+    UIPopoverController *imagePickerPopover;
 }
 - (IBAction)backgroundTapped:(id)sender;
 - (IBAction)takePicture:(id)sender;
+- (id)initForNewItem: (BOOL)isNew;
 @property (nonatomic, strong) BNRItem *item;
+@property (nonatomic, copy) void (^dismissBlock) (void);
 @end
