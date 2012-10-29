@@ -14,7 +14,11 @@
 - (id)init{
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-
+        UINavigationItem *n = [self navigationItem];
+        [n setTitle:@"Homepwner"];
+        UIBarButtonItem *bbi = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewItem:)];
+        [[self navigationItem] setRightBarButtonItem:bbi];
+        [[self navigationItem] setLeftBarButtonItem:[self editButtonItem]];
     }
     return self;
 }
@@ -41,35 +45,6 @@
     return cell;
 }
 
-- (UIView *)headerView
-{
-    if (!headerView) {
-        [[NSBundle mainBundle] loadNibNamed:@"HeaderView" owner:self options:nil];
-    }
-    return headerView;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return [self headerView];
-}
-
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return [[self headerView] bounds].size.height;
-}
-
-- (IBAction)toggleEditingMode:(id)sender
-{
-    if ([self isEditing]) {
-        [sender setTitle:@"Edit" forState:UIControlStateNormal];
-        [self setEditing:NO animated:YES];
-    } else {
-        [sender setTitle:@"Done" forState:UIControlStateNormal];
-        [self setEditing:YES animated:YES];
-    }
-}
-
 - (IBAction)addNewItem:(id)sender
 {
     BNRItem *newItem = [[BNRItemStore sharedStore] createItem];
@@ -83,4 +58,21 @@
     [[BNRItemStore sharedStore] moveItemAtIndex:[sourceIndexPath row] toIndex:[destinationIndexPath row]];
 }
 
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DetailViewController *detailViewController = [[DetailViewController alloc] init];
+    
+    NSArray *items = [[BNRItemStore sharedStore] allItems];
+    BNRItem *selectedItem = [items objectAtIndex:[indexPath row]];
+    [detailViewController setItem:selectedItem];
+    
+    
+    [[self navigationController] pushViewController:detailViewController animated:YES];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[self tableView] reloadData];
+}
 @end
