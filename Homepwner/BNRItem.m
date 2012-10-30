@@ -10,7 +10,7 @@
 
 @implementation BNRItem
 
-@synthesize itemName, serialNumber, valueInDollars, dateCreated, container, containedItem, imageKey;
+@synthesize itemName, serialNumber, valueInDollars, dateCreated, container, containedItem, imageKey, thumbnail, thumbnailData;
 
 - (void)setContainedItem:(BNRItem *)i
 {
@@ -54,6 +54,7 @@
     [aCoder encodeObject:imageKey forKey:@"imageKey"];
     
     [aCoder encodeInt:valueInDollars forKey:@"valueInDollars"];
+    [aCoder encodeObject:thumbnailData forKey:@"thumbnailData"];
     
 }
 
@@ -66,7 +67,41 @@
         [self setImageKey:[aDecoder decodeObjectForKey:@"imageKey"]];
         [self setValueInDollars:[aDecoder decodeIntForKey:@"valueInDollars"]];
         dateCreated = [aDecoder decodeObjectForKey:@"dateCreated"];
+        thumbnailData = [aDecoder decodeObjectForKey:@"thumbnailData"];
     }
     return self;
+}
+
+- (UIImage *)thumbnail
+{
+    if (!thumbnailData) {
+        return nil;
+    }
+    if (!thumbnail) {
+        thumbnail = [UIImage imageWithData:thumbnailData];
+    }
+    return thumbnail;
+}
+
+- (void)setThumbnailDataFromImage:(UIImage *)image
+{
+    CGSize origImageSize = [image size];
+    CGRect newRect = CGRectMake(0, 0, 40, 40);
+    float ratio = MAX(newRect.size.width / origImageSize.width, newRect.size.height / origImageSize.height);
+    UIGraphicsBeginImageContextWithOptions(newRect.size, NO, 0.0);
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:newRect cornerRadius:5.0];
+    [path addClip];
+    CGRect projectRect;
+    projectRect.size.width = ratio * origImageSize.width;
+    projectRect.size.height = ratio * origImageSize.height;
+    projectRect.origin.x = (newRect.size.width - projectRect.size.width) / 2.0;
+    projectRect.origin.y = (newRect.size.height - projectRect.size.height) / 2.0;
+    
+    [image drawInRect:projectRect];
+    UIImage *smallImage = UIGraphicsGetImageFromCurrentImageContext();
+    [self setThumbnail:smallImage];
+    NSData *data = UIImagePNGRepresentation(smallImage);
+    [self setThumbnailData:data];
+    UIGraphicsEndImageContext();
 }
 @end

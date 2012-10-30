@@ -120,6 +120,8 @@
     
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
+    [item setThumbnailDataFromImage:image];
+    
     CFUUIDRef newUniqueId = CFUUIDCreate(kCFAllocatorDefault);
     
     CFStringRef newUniqueIdString = CFUUIDCreateString(kCFAllocatorDefault, newUniqueId);
