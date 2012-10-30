@@ -10,6 +10,7 @@
 #import "BNRItem.h"
 #import "BNRImageStore.h"
 #import "BNRItemStore.h"
+#import "AssetTypePicker.h"
 
 @implementation DetailViewController
 @synthesize item;
@@ -47,7 +48,8 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
     [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-    [dateLabel setText:[dateFormatter stringFromDate:[item dateCreated]]];
+    NSDate *date = [NSDate dateWithTimeIntervalSinceReferenceDate:[item dateCreated]];
+    [dateLabel setText:[dateFormatter stringFromDate:date]];
     
     NSString *imageKey = [item imageKey];
     if (imageKey) {
@@ -57,6 +59,10 @@
     } else {
         [imageView setImage:nil];
     }
+    NSString *typeLabel = [[item assetType] valueForKey:@"label"];
+    if (!typeLabel)
+        typeLabel = @"None";
+    [assetTypeButton setTitle:[NSString stringWithFormat:@"Type: %@", typeLabel] forState:UIControlStateNormal];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -74,6 +80,7 @@
     valueField = nil;
     dateLabel = nil;
     imageView = nil;
+    assetTypeButton = nil;
     [super viewDidUnload];
 }
 - (IBAction)backgroundTapped:(id)sender {
@@ -166,6 +173,13 @@
     return self;
 }
 
+- (IBAction)showAssetTypePicker:(id)sender {
+    [[self view] endEditing:YES];
+    AssetTypePicker *assetTypePicker = [[AssetTypePicker alloc] init];
+    [assetTypePicker setItem:item];
+    [[self navigationController] pushViewController:assetTypePicker animated:YES];
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     @throw [NSException exceptionWithName:@"Wrong initializer" reason:@"Use initForNewItem" userInfo:nil];
@@ -182,4 +196,6 @@
     [[BNRItemStore sharedStore] removeItem:item];
     [[self presentingViewController] dismissViewControllerAnimated:YES completion:dismissBlock];
 }
+
+
 @end

@@ -17,10 +17,12 @@
     __weak IBOutlet UITextField *valueField;
     __weak IBOutlet UILabel *dateLabel;
     UIPopoverController *imagePickerPopover;
+    __weak IBOutlet UIButton *assetTypeButton;
 }
 - (IBAction)backgroundTapped:(id)sender;
 - (IBAction)takePicture:(id)sender;
 - (id)initForNewItem: (BOOL)isNew;
+- (IBAction)showAssetTypePicker:(id)sender;
 @property (nonatomic, strong) BNRItem *item;
 @property (nonatomic, copy) void (^dismissBlock) (void);
 @end

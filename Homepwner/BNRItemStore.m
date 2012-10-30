@@ -16,10 +16,20 @@
 {
     self = [super init];
     if (self) {
+        model = [NSManagedObjectModel mergedModelFromBundles:nil];
+        NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+        
         NSString *path = [self itemArchivePath];
-        allItems = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-        if (!allItems)
-            allItems = [[NSMutableArray alloc] init];
+        NSURL *storeURL = [NSURL fileURLWithPath:path];
+        NSError *error = nil;
+        if (![psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+            [NSException raise:@"openfailed" format:@"reason: %@", [error localizedDescription]];
+        }
+        context = [[NSManagedObjectContext alloc] init];
+        [context setPersistentStoreCoordinator:psc];
+        
+        [context setUndoManager:nil];
+        [self loadAllItems];
     }
     return self;
     
@@ -45,8 +55,18 @@
 
 - (BNRItem *)createItem
 {
-    BNRItem *p = [[BNRItem alloc] init];
-
+    double order;
+    if ([allItems count] == 0) {
+        order = 1.0;
+    } else {
+        order = [[allItems lastObject] orderingValue] + 1.0;
+    }
+    NSLog(@"Adding after %d items, order =%.2f", [allItems count], order);
+    
+    BNRItem *p = [NSEntityDescription insertNewObjectForEntityForName:@"BNRItem" inManagedObjectContext:context];
+    
+    [p setOrderingValue:order];
+    
     [allItems addObject:p];
     return p;
 }
@@ -55,6 +75,7 @@
 {
     NSString *key = [p imageKey];
     [[BNRImageStore sharedStore] deleteImageForKey:key];
+    [context deleteObject:p];
     [allItems removeObjectIdenticalTo:p];
 }
 
@@ -79,19 +100,89 @@
     [allItems removeObjectAtIndex:from];
     [allItems insertObject:p atIndex:to];
     
+    double lowerBound = 0.0;
+    
+    if (to > 0) {
+        lowerBound = [[allItems objectAtIndex:to - 1] orderingValue];
+    } else {
+        lowerBound = [[allItems objectAtIndex:1] orderingValue] - 2.0;
+    }
+    double upperBound = 0.0;
+    if (to < [allItems count] - 1) {
+        upperBound = [[allItems objectAtIndex:to + 1] orderingValue];
+    } else {
+        upperBound = [[allItems objectAtIndex:to - 1] orderingValue] + 2.0;
+    }
+    
+    double newOrderValue = (lowerBound + upperBound) / 2.0;
+    
+    NSLog(@"moving to order %f", newOrderValue);
+    [p setOrderingValue:newOrderValue];
 }
 
 - (NSString *)itemArchivePath
 {
     NSArray *documentDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentDirectory = [documentDirectories objectAtIndex:0];
-    return [documentDirectory stringByAppendingFormat:@"items.archive"];
+    return [documentDirectory stringByAppendingPathComponent:@"store.data"];
 }
 
 - (BOOL)saveChanges
 {
-    NSString *path = [self itemArchivePath];
-    
-    return [NSKeyedArchiver archiveRootObject:allItems toFile:path];
+    NSError *err = nil;
+    BOOL successful = [context save:&err];
+    if (!successful) {
+        NSLog(@"Error saving: %@", [err localizedDescription]);
+    }
+    return successful;
 }
+
+- (void) loadAllItems
+{
+    if (!allItems) {
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        NSEntityDescription *e = [[model entitiesByName] objectForKey:@"BNRItem"];
+        [request setEntity:e];
+        
+        NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:@"orderingValue" ascending:YES];
+        [request setSortDescriptors:[NSArray arrayWithObject:sd]];
+        NSError *error;
+        NSArray *result = [context executeFetchRequest:request error:&error];
+        if (!result) {
+            [NSException raise:@"fetch failed" format:@"reason: %@", [error localizedDescription]];
+        }
+        allItems = [[NSMutableArray alloc] initWithArray:result];
+    }
+}
+
+- (NSArray *)allAssetTypes
+{
+    if (!allAssetTypes) {
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        NSEntityDescription *e = [[model entitiesByName] objectForKey:@"BNRAssetType"];
+        [request setEntity:e];
+        NSError *error;
+        NSArray *result = [context executeFetchRequest:request error:&error];
+        if (!result) {
+            [NSException raise:@"Fetch failed" format:@"Reason: %@", [error localizedDescription]];
+        }
+        allAssetTypes = [result mutableCopy];
+    }
+    if ([allAssetTypes count] == 0) {
+        NSManagedObject *type;
+        type = [NSEntityDescription insertNewObjectForEntityForName:@"BNRAssetType" inManagedObjectContext:context];
+        [type setValue:@"Furniture" forKey:@"label"];
+        [allAssetTypes addObject:type];
+        
+        type = [NSEntityDescription insertNewObjectForEntityForName:@"BNRAssetType" inManagedObjectContext:context];
+        [type setValue:@"Jewelry" forKey:@"label"];
+        [allAssetTypes addObject:type];
+        type = [NSEntityDescription insertNewObjectForEntityForName:@"BNRAssetType" inManagedObjectContext:context];
+        [type setValue:@"Electronics" forKey:@"label"];
+        [allAssetTypes addObject:type];
+    }
+    return allAssetTypes;
+}
+
+
 @end
